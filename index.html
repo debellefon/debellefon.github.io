@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      if (window.location.hash) {
+        window.__pendingHash = window.location.hash.slice(1);
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Académie de Bellefon — Performance & Santé </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --olive:       #3d4a2e;
+      --olive-dark:  #2b3320;
+      --olive-mid:   #4f5f3a;
+      --cream:       #f5f2ec;
+      --cream-warm:  #ece8df;
+      --white:       #ffffff;
+      --gold:        #b8a97a;
+      --text-light:  #d4cfc5;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--olive-dark);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(43, 51, 32, 0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      color: var(--cream);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-logo-line + .nav-logo-line { margin-left: 0.3em; }
+
+    .nav-signature {
+      display: inline-flex;
+      align-items: center;
+      margin-left: -30rem;
+    }
+
+    .nav-signature-img {
+      height: 48px;
+      opacity: 0.7;
+      filter: brightness(1.4);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cream); }
+
+    /* ── HAMBURGER (mobile only, hidden by default) ── */
+    .nav-toggle-checkbox { display: none; }
+
+    .nav-toggle-label {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 26px;
+      height: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .nav-toggle-label span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: var(--cream);
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      width: 100%;
+      background: var(--olive-dark);
+      padding-top: 64px;
+    }
+
+    .hero-logo-wrap {
+      display: flex;
+      justify-content: center;
+      padding-top: 1.1rem;
+    }
+
+    .hero-logo-link {
+      display: block;
+    }
+
+    .hero-logo {
+      height: 310px;
+      width: auto;
+      display: block;
+    }
+
+    .hero-eyebrow-top {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      padding: 0.4rem 0rem 1.6rem;
+      text-decoration: none;
+      transition: color 0.2s, letter-spacing 0.2s;
+    }
+
+    a.hero-eyebrow-top:hover {
+      color: var(--cream);
+      letter-spacing: 0.26em;
+    }
+
+    .hero-banner-link {
+      display: block;
+    }
+
+    .hero-banner {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: top center;
+      filter: saturate(0.75) brightness(0.85);
+    }
+
+    .hero-text {
+      padding: 3.5rem 6rem;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+      max-width: 440px;
+    }
+
+    .hero-triad {
+      display: flex;
+      gap: 1.4rem;
+      justify-content: flex-end;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .hero-triad:hover {
+      opacity: 0.8;
+    }
+
+    .triad-word {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--cream);
+      opacity: 0.9;
+    }
+
+    .triad-sep {
+      color: var(--gold);
+      opacity: 0.5;
+      align-self: center;
+    }
+
+    /* ── SECTION IDENTITÉ ── */
+    .section { padding: 2.5rem 6rem 7rem; }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--olive-dark);
+      margin-bottom: 2rem;
+    }
+
+    .identity { background: var(--cream); }
+
+    .identity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      margin-top: 4rem;
+    }
+
+    .identity-body { font-size: 0.95rem; color: #4a4a3a; line-height: 1.8; }
+    .identity-body p + p { margin-top: 1.2rem; }
+
+    .values-col { display: flex; flex-direction: column; gap: 2rem; }
+
+    .value-item { border-left: 2px solid var(--gold); padding-left: 1.4rem; }
+
+    .value-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--olive-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .value-desc { font-size: 0.82rem; color: #6a6a55; letter-spacing: 0.02em; }
+
+    /* ── PRATICIENS ── */
+    .praticiens { background: var(--olive-dark); padding: 2.5rem 6rem 7rem; }
+    .praticiens .section-title { color: var(--cream); }
+
+    .praticiens-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+
+    .praticien-card {
+      background: var(--olive-mid);
+      border: 1px solid rgba(184,169,122,0.2);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: border-color 0.3s;
+    }
+
+    .praticien-card:hover { border-color: var(--gold); }
+
+    .praticien-photo {
+      width: 72px; height: 72px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .praticien-name {
+      font-family: var(--font-display);
+      font-size: 1.8rem; font-weight: 300;
+      color: var(--cream); line-height: 1.1;
+    }
+
+    .praticien-role {
+      font-size: 0.72rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+    }
+
+    .praticien-bio { font-size: 0.88rem; color: var(--text-light); line-height: 1.75; flex: 1; }
+
+    .btn-doctolib {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--font-body);
+      font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 1.8rem;
+      transition: background 0.25s, color 0.25s;
+      align-self: flex-start;
+    }
+
+    .btn-doctolib:hover { background: var(--gold); color: var(--olive-dark); }
+    .btn-doctolib svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── AVIS GOOGLE ── */
+    .reviews { background: var(--cream-warm); padding: 2.5rem 6rem 7rem; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+
+    .review-card {
+      background: var(--white);
+      border: 1px solid rgba(61,74,46,0.12);
+      padding: 2.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 0.3rem;
+    }
+
+    .review-stars svg {
+      width: 20px; height: 20px;
+      fill: var(--gold);
+    }
+
+    .review-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--olive-dark);
+    }
+
+    .review-sub {
+      font-size: 0.82rem;
+      color: #6a6a55;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    .btn-google {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--olive-dark);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 1.8rem;
+      transition: background 0.25s;
+    }
+
+    .btn-google:hover { background: var(--olive-mid); }
+    .btn-google svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── PODCAST ── */
+    .podcast {
+      background: var(--olive-dark);
+      padding: 2.5rem 6rem 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .podcast-text { max-width: 480px; }
+    .podcast .section-label { color: var(--gold); }
+    .podcast .section-title { color: var(--cream); margin-bottom: 1rem; }
+    .podcast-sub { font-size: 0.9rem; color: var(--text-light); line-height: 1.7; }
+
+    .podcast-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn-spotify {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      background: #1DB954;
+      color: var(--olive-dark);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.2rem;
+      border-radius: 999px;
+      transition: transform 0.2s, background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-spotify:hover { background: #1ed760; transform: translateY(-2px); }
+    .btn-spotify svg { width: 20px; height: 20px; fill: var(--olive-dark); }
+
+    .btn-apple {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      background: var(--cream);
+      color: var(--olive-dark);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.2rem;
+      border-radius: 999px;
+      transition: transform 0.2s, background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-apple:hover { background: var(--gold); transform: translateY(-2px); }
+    .btn-apple svg { width: 20px; height: 20px; fill: var(--olive-dark); }
+
+    /* ── CTA ── */
+    .cta-section { background: var(--cream-warm); padding: 2.5rem 6rem 6rem; text-align: center; }
+    .cta-section .section-title { max-width: 600px; margin: 0 auto 1.5rem; }
+    .cta-sub { font-size: 0.9rem; color: #6a6a55; margin-bottom: 3rem; }
+    .cta-buttons { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--olive-dark); color: var(--cream);
+      font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none; padding: 1rem 2.5rem;
+      transition: background 0.25s;
+    }
+    .btn-primary:hover { background: var(--olive-mid); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--olive-dark);
+      padding: 2.5rem 6rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 300; letter-spacing: 0.12em;
+      color: var(--cream); opacity: 0.7;
+      text-decoration: none;
+    }
+
+    .footer-copy { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--text-light); opacity: 0.5; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav {
+        position: fixed;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.9rem 1.2rem;
+      }
+      .nav-logo {
+        order: 1;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.15rem;
+        line-height: 1.3;
+        letter-spacing: 0.14em;
+      }
+      .nav-logo-line + .nav-logo-line { margin-left: 0; }
+      .nav-signature {
+        margin-left: 0;
+        order: 2;
+      }
+      .nav-signature-img {
+        height: 52px;
+      }
+      .nav-toggle-label { display: flex; order: 3; }
+
+      .nav-links {
+        order: 4;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 0;
+        padding: 0.5rem 0 1.5rem;
+        background: var(--olive-dark);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.25);
+      }
+      .nav-toggle-checkbox:checked ~ .nav-links { display: flex; }
+
+      .nav-links li { width: 100%; text-align: center; }
+      .nav-links a {
+        display: block;
+        padding: 0.9rem 1.5rem;
+        font-size: 0.75rem;
+      }
+
+      .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(2) { opacity: 0; }
+      .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      .hero { padding-top: 70px; }
+      .hero-banner { object-position: top center; }
+      .hero-logo-wrap { padding-top: 0rem; }
+      .hero-logo { height: 350px; }
+
+      .hero-text { padding: 2.5rem 2rem; align-items: flex-start; text-align: left; }
+      .hero-triad { justify-content: flex-start; }
+
+      .section { padding: 2.75rem 2rem 4rem; }
+      .identity-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .praticiens { padding: 2.75rem 2rem 4rem; }
+      .praticiens-grid { grid-template-columns: 1fr; }
+      .reviews { padding: 2.75rem 2rem 4rem; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .podcast { padding: 2.75rem 2rem 4rem; flex-direction: column; text-align: center; align-items: center; }
+      .podcast-text { text-align: center; }
+      .podcast-buttons { justify-content: center; }
+      .cta-section { padding: 2.75rem 2rem 4rem; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem; text-align: center; }
+
+      /* Pour que le bandeau ne masque par le haut des sections quand on va dessus */
+      #identite,
+      #praticiens,
+      #avis,
+      #podcast,
+      #rdv {
+      scroll-margin-top: 64px;
+      }
+      
+    }
+    
+
+    @media (max-width: 640px) {
+      nav { padding: 0.8rem 1rem; }
+      .nav-logo { font-size: 1rem; }
+      .nav-signature-img { height: 46px; }
+      .hero-logo { height: 280px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span class="nav-logo-line">Académie</span><span class="nav-logo-line">de Bellefon</span></a>
+  <a class="nav-signature" href="index.html" aria-label="Retour à l'accueil"><img class="nav-signature-img" src="signature_Transparent.png" alt="Signature E. de Bellefon" /></a>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+  <label for="nav-toggle" class="nav-toggle-label" aria-label="Ouvrir le menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
+  <ul class="nav-links">
+    <li><a href="formations.html" class="active">Formations</a></li>
+    <li><a href="rdv.html">Prendre RDV</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-logo-wrap">
+    <a class="hero-logo-link" href="formations.html"><img class="hero-logo" src="LogoComplet.png" alt="Blason de la famille de Bellefon" /></a>
+  </div>
+  <a class="hero-eyebrow-top" href="formations.html">Connaissance · Santé · Performance</a>
+  <a class="hero-banner-link" href="formations.html"><img class="hero-banner" src="GHCover.jpg" alt="Académie de Bellefon" /></a>
+  <div class="hero-text">
+    <h1 class="hero-title">
+      Académie<br>
+      <em>de Bellefon</em>
+    </h1>
+    <p class="hero-sub">
+      Un lieu où l'ostéopathie et le coaching redonnent au mouvement toute sa place.
+    </p>
+    <a class="hero-triad" href="#identite">
+      <span class="triad-word">Action</span>
+      <span class="triad-sep">·</span>
+      <span class="triad-word">Alignement</span>
+      <span class="triad-sep">·</span>
+      <span class="triad-word">Activation</span>
+    </a>
+  </div>
+</section>
+
+<!-- IDENTITÉ -->
+<section class="section identity" id="identite">
+  <p class="section-label">Le cabinet</p>
+  <h2 class="section-title">Une approche globale,<br>des experts d'élite</h2>
+  <div class="identity-grid">
+    <div class="identity-body">
+      <p>L'Académie de Bellefon réunit des ostéopathes, coachs et professionnels issus des institutions les plus prestigieuses. Notre approche intègre rigueur clinique, empathie et précision à des méthodes de coaching éprouvées par les plus hauts niveaux de performance.</p>
+      <p>Que vous veniez pour une douleur chronique, une préparation sportive, un accompagnement vers une performance spécifique ou autre, chaque séance est pensée pour révéler votre plein potentiel — physique, mental, et humain.</p>
+      <p>Nous reçevons sur rendez-vous à Paris, avec une disponibilité étendue pour s'adapter à vos contraintes.</p>
+    </div>
+    <div class="values-col">
+      <div class="value-item">
+        <div class="value-name">Action</div>
+        <div class="value-desc">Chaque session débouche sur un protocole concret, adapté à votre réalité.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-name">Alignement</div>
+        <div class="value-desc">Corps, posture et projets réconciliés dans une vision cohérente.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-name">Activation</div>
+        <div class="value-desc">Libérer les ressources qui sont déjà en vous : Performance & Santé — c'est notre engagement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRATICIENS -->
+<section class="praticiens" id="praticiens">
+  <p class="section-label" style="color:var(--gold)">Vos praticiens</p>
+  <h2 class="section-title">Rencontrez<br>Emmanuel & Audrey</h2>
+  <div class="praticiens-grid">
+
+    <div class="praticien-card">
+      <img class="praticien-photo" src="Emmanuel_photo.png" alt="Emmanuel de Bellefon" />
+      <div>
+        <div class="praticien-role">Ostéopathe D.O. & Coach</div>
+        <div class="praticien-name">Emmanuel<br>de Bellefon</div>
+      </div>
+      <p class="praticien-bio">
+        Ostéopathe, conférencier et spécialiste de la gestion du stress, Emmanuel accompagne celles et ceux qui souhaitent retrouver un équilibre durable entre le corps, les émotions et le mental. Son parcours atypique, de CentraleSupélec à l'ostéopathie en passant par la finance et le plongeon de haut vol, nourrit une approche unique de la performance humaine et de la résilience. À l'écoute, exigeant et profondément engagé, il aide chacun à retrouver ses ressources pour avancer avec plus de sérénité et de justesse. Sa conviction : l'alignement du Corps, du Cœur et de l'Esprit ouvre la voie à des transformations durables.
+      </p>
+      <a class="btn-doctolib" href="https://www.doctolib.fr/osteopathe/paris/emmanuel-de-bellefon?pid=practice-463641" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M19 4H5a3 3 0 00-3 3v10a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zm1 13a1 1 0 01-1 1H5a1 1 0 01-1-1V9h16v8zm0-10H4V7a1 1 0 011-1h14a1 1 0 011 1v1z"/></svg>
+        Prendre RDV sur Doctolib
+      </a>
+    </div>
+
+    <div class="praticien-card">
+      <img class="praticien-photo" src="Audrey_photo.png" alt="Audrey Bucaille" />
+      <div>
+        <div class="praticien-role">Ostéopathe D.O. & Coach</div>
+        <div class="praticien-name">Audrey<br>Bucaille (de Bellefon) </div>
+      </div>
+      <p class="praticien-bio">
+        Ostéopathe et coach sportif, Audrey accompagne celles et ceux qui souhaitent retrouver un corps plus libre, plus fort et durablement en équilibre. Elle s'appuie sur une approche globale, nourrie par plusieurs milliers d'heures de coaching et une solide expérience clinique. Son écoute, sa douceur et la précision de son analyse lui permettent de proposer un accompagnement entièrement personnalisé. Sa conviction est simple : la vie, c'est le mouvement. En redonnant au corps sa mobilité, chacun retrouve le plaisir de bouger, de respirer et de vivre pleinement.
+      </p>
+      <a class="btn-doctolib" href="https://www.doctolib.fr/osteopathe/paris/audrey-bucaille?pid=practice-444057" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M19 4H5a3 3 0 00-3 3v10a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zm1 13a1 1 0 01-1 1H5a1 1 0 01-1-1V9h16v8zm0-10H4V7a1 1 0 011-1h14a1 1 0 011 1v1z"/></svg>
+        Prendre RDV sur Doctolib
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- AVIS GOOGLE -->
+<section class="reviews" id="avis">
+  <p class="section-label">La confiance de nos patients</p>
+  <h2 class="section-title">Avis Google</h2>
+  <div class="reviews-grid">
+
+    <div class="review-card">
+      <div class="review-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+      </div>
+      <div class="review-name">Emmanuel de Bellefon</div>
+      <p class="review-sub">Découvrez les avis laissés par les patients d'Emmanuel.</p>
+      <a class="btn-google" href="https://share.google/V1zJ8mzRy5zAVcDgC" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0012 23z"/><path fill="#FBBC05" d="M5.84 14.09A6.6 6.6 0 015.5 12c0-.73.13-1.43.34-2.09V7.06H2.18A11 11 0 001 12c0 1.77.42 3.45 1.18 4.94l3.66-2.85z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 00-9.82 6.06l3.66 2.85C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+        Voir les avis
+      </a>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+      </div>
+      <div class="review-name">Audrey Bucaille</div>
+      <p class="review-sub">Découvrez les avis laissés par les patients d'Audrey.</p>
+      <a class="btn-google" href="https://share.google/6ex4dUz8tERPKVhJ5" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0012 23z"/><path fill="#FBBC05" d="M5.84 14.09A6.6 6.6 0 015.5 12c0-.73.13-1.43.34-2.09V7.06H2.18A11 11 0 001 12c0 1.77.42 3.45 1.18 4.94l3.66-2.85z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 00-9.82 6.06l3.66 2.85C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+        Voir les avis
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- PODCAST -->
+<section class="podcast" id="podcast">
+  <div class="podcast-text">
+    <p class="section-label">Le podcast du cabinet</p>
+    <h2 class="section-title"><em>Mon Corps Est Un Trésor</em></h2>
+    <p class="podcast-sub">Quelques éléments sur la performance, la santé et le mouvement convertis en podcast, à écouter sans modération.</p>
+  </div>
+  <div class="podcast-buttons">
+    <a class="btn-spotify" href="https://open.spotify.com/show/1zqzVpo3P5uRbv8AiAiDcP?si=e3012b38e3034592" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.52 17.34c-.24.36-.66.48-1.02.24-2.82-1.68-6.36-2.10-10.56-1.14-.42.12-.78-.18-.9-.54-.12-.42.18-.78.54-.9 4.56-1.02 8.52-.6 11.64 1.32.42.18.48.66.3 1.02zm1.44-3.3c-.3.42-.84.6-1.26.3-3.24-1.98-8.16-2.58-11.94-1.38-.48.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.38-1.32 9.78-.66 13.5 1.62.36.18.54.78.24 1.2zm.12-3.42C15.3 8.28 8.76 8.04 5.04 9.18c-.6.18-1.2-.18-1.38-.72-.18-.6.18-1.2.72-1.38 4.32-1.32 11.52-1.02 15.84 1.5.54.3.72 1.02.42 1.56-.3.42-1.02.6-1.56.3z"/></svg>
+      Écouter sur Spotify
+    </a>
+    <a class="btn-apple" href="https://podcasts.apple.com/fr/podcast/mon-corps-est-un-tr%C3%A9sor/id1859935000" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4.8c2.87 0 5.2 2.33 5.2 5.2 0 1.99-1.12 3.72-2.77 4.59.03.22.05.44.05.67 0 2.65-1.98 4.84-4.48 5.15v-2.02c1.39-.3 2.43-1.54 2.43-3.02 0-.13-.01-.26-.03-.39-.98.5-2.09.79-3.27.79-1.18 0-2.29-.29-3.27-.79-.02.13-.03.26-.03.39 0 1.48 1.04 2.72 2.43 3.02v2.02c-2.5-.31-4.48-2.5-4.48-5.15 0-.23.02-.45.05-.67C4.92 13.72 3.8 11.99 3.8 10c0-2.87 2.33-5.2 5.2-5.2h3zm-1.5 2.6a2.6 2.6 0 100 5.2 2.6 2.6 0 000-5.2z"/></svg>
+      Écouter sur Apple Podcasts
+    </a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="rdv">
+  <p class="section-label">Votre première séance</p>
+  <h2 class="section-title">Prêt à passer à l'action ?</h2>
+  <p class="cta-sub">Réservez directement en ligne votre bilan ostéopathique complet initial, sans attente.</p>
+  <div class="cta-buttons">
+    <a class="btn-primary" href="https://www.doctolib.fr/osteopathe/paris/emmanuel-de-bellefon?pid=practice-463641" target="_blank" rel="noopener">RDV avec Emmanuel</a>
+    <a class="btn-primary" href="https://www.doctolib.fr/osteopathe/paris/audrey-bucaille?pid=practice-444057" target="_blank" rel="noopener">RDV avec Audrey</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="index.html"> Académie de Bellefon </a>
+  <span class="footer-logo"> Étretat . Paris . Nice </span>
+  <span class="footer-copy">© 2026 · Tous droits réservés</span>
+</footer>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('nav-toggle');
+    var nav = document.querySelector('nav');
+    if (!toggle || !nav) return;
+
+    nav.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        toggle.checked = false;
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (toggle.checked && !nav.contains(e.target)) {
+        toggle.checked = false;
+      }
+    });
+  })();
+  (function () {
+    function navOffset() {
+      var nav = document.querySelector('nav');
+      return nav ? nav.getBoundingClientRect().height : 0;
+    }
+
+    function scrollToId(id, behavior) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var top = el.getBoundingClientRect().top + window.pageYOffset - navOffset();
+      window.scrollTo({ top: top, behavior: behavior || 'smooth' });
+    }
+
+    // Intercepte les clics vers une ancre de cette même page pour tenir compte
+    // de la hauteur réelle (variable) du bandeau fixe.
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href*="#"]');
+      if (!link) return;
+
+      var href = link.getAttribute('href');
+      var hashPos = href.indexOf('#');
+      var id = href.slice(hashPos + 1);
+      if (!id) return;
+
+      var pathPart = href.slice(0, hashPos);
+      var isSamePage = pathPart === '' || pathPart === 'index.html' || pathPart.endsWith('/index.html');
+      if (!isSamePage) return;
+
+      var el = document.getElementById(id);
+      if (!el) return;
+
+      e.preventDefault();
+      scrollToId(id);
+      history.replaceState(null, '', '#' + id);
+    });
+
+    // Arrivée sur la page avec une ancre (depuis une autre page, ou lien direct) :
+    // on attend que la mise en page soit stable puis on cale précisément.
+    window.addEventListener('load', function () {
+      if (window.__pendingHash) {
+        scrollToId(window.__pendingHash, 'auto');
+        history.replaceState(null, '', '#' + window.__pendingHash);
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
